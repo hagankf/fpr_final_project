@@ -21,6 +21,10 @@ pokemon_data <- pokemon_data %>%
     select(starts_with("against"), hp) %>% 
     scale() %>% as.data.frame()
 
+#I had never seen droplevels() or drop_na() before, and both seem very useful! I also 
+#just looked up what the scale() function does, and using this to center numeric columns could
+#save a lot of hassle (I had previously done this the long way).
+
 
 # Load output from k-means clustering -------------------------------------
 
@@ -89,7 +93,7 @@ scatplot <- function(data){
         theme(panel.grid.minor = element_blank())
 }
 
-
+#labeller = labeller is also very helpful
 
 # Dashboard header --------------------------------------------------------
 
@@ -116,8 +120,18 @@ sidebar <- dashboardSidebar(
                     selected = "clust2")
     ))
 
+#The first time I went through running chunks of code, I got an error that read: Error in icon("info-circle") : could not find function "icon"
+#That made me wonder if the icon() function was in shinybootstrap2, or if it is enough to load the shinydashboard library above? But I didn't get 
+#the same error message when I started over again from the top.
 
 # Dashboard body ----------------------------------------------------------
+
+#KH: After running the code in this section, I got an error that fluidRow function could not be found
+#I loaded the shiny library here, and this code then ran without a problem. This might of course create
+#issues with masking later on. EDIT:I tried again by running run_clustering.R first and then running through
+#this code in the app.R file. This time I didn't get the error message!
+
+#library(shiny)
 
 body <- dashboardBody(
     tabItems(
@@ -166,12 +180,16 @@ body <- dashboardBody(
         )
     )
 
-
+#KH: Nice description of k-means clustering and interpretation of the output
 
 # User interface ----------------------------------------------------------
 
 ui <- dashboardPage(header, sidebar, body)
 
+#Here i got an error that said Error in tagAssert(sidebar, type = "aside", class = "main-sidebar") : 
+#object 'sidebar' not found. I thought that this might be an issue I created by loading the shiny
+#package in the last section, so I re-loaded the libraries at the top and also tried 
+#shinydashboard::dashboardPage
 
 # Server ------------------------------------------------------------------
 
